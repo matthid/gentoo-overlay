@@ -15,7 +15,9 @@ SRC_URI="http://www.sogo.nu/files/downloads/SOGo/Sources/${MY_PN}-${MY_PV}.tar.g
 LICENSE="LGPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="apache2 ldap libFoundation mysql postgres sqlite"
+# Removed use-flag: libfoundation apache2
+IUSE="apache2 ldap mysql postgres sqlite" 
+#IUSE=""
 DEPEND="gnustep-base/gnustep-base
 	dev-libs/libxml2
 	dev-libs/openssl
@@ -29,7 +31,7 @@ APACHE2_MOD_DEFINE="NGOBJWEB"
 APACHE2_MOD_FILE="sope-appserver/mod_ngobjweb/mod_ngobjweb.so"
 APACHE2_MOD_CONF="47_mod_ngobjweb"
 
-S=${WORKDIR}/${PN}
+S=${WORKDIR}/${MY_PN}
 
 want_apache
 
@@ -57,59 +59,63 @@ pkg_setup() {
 
 src_prepare() {
 	# http://www.scalableogo.org/english/support/faq/article/how-do-i-compile-sogo.html
-	epatch "${WORKDIR}"/SOGo-1.1.0/SOPE/sope-gsmake2.diff
-	epatch "${WORKDIR}"/SOGo-1.1.0/SOPE/sope-patchset-r1660.diff
-	epatch "${FILESDIR}"/${PN}-r1660-SOGo-fix.patch			# Fixing stuff after SOGo patches
-	epatch "${FILESDIR}"/${PN}-r1660-NSZoneMallocAtomic.patch	# NSZoneMalloc changed in GNUstep
-	epatch "${FILESDIR}"/${PN}-r1660-SoOFS.patch			# libSoOFS is failing without -lcrypt
-	epatch "${FILESDIR}"/${PN}-r1660-WORepetition.m.patch
-	epatch "${FILESDIR}"/${PN}-r1660-NSDictionary+KVC.patch
-	epatch "${FILESDIR}"/${PN}-r1660-NSNull+misc.m.patch
-	epatch "${FILESDIR}"/${PN}-r1660-LDAP_deprecated.patch
+	#epatch "${WORKDIR}"/SOGo-1.1.0/SOPE/sope-gsmake2.diff
+	#epatch "${WORKDIR}"/SOGo-1.1.0/SOPE/sope-patchset-r1660.diff
+	#epatch "${FILESDIR}"/${PN}-r1660-SOGo-fix.patch			# Fixing stuff after SOGo patches
+	#epatch "${FILESDIR}"/${PN}-r1660-NSZoneMallocAtomic.patch	# NSZoneMalloc changed in GNUstep
+	#epatch "${FILESDIR}"/${PN}-r1660-SoOFS.patch			# libSoOFS is failing without -lcrypt
+	#epatch "${FILESDIR}"/${PN}-r1660-WORepetition.m.patch
+	#epatch "${FILESDIR}"/${PN}-r1660-NSDictionary+KVC.patch
+	#epatch "${FILESDIR}"/${PN}-r1660-NSNull+misc.m.patch
+	#epatch "${FILESDIR}"/${PN}-r1660-LDAP_deprecated.patch
 
-	if use apache2; then
-		# Only add mod_ngobjweb if it is not already in SUBPROJECTS
-		if ! ( sed -e :a -e '/\\$/N; s/\\\n//; ta' "${S}"/sope-appserver/GNUmakefile 2>/dev/null | grep -q "^[[:space:]]*SUBPROJECTS[\t \+=].*[[:space:]]mod_ngobjweb" ); then
-			sed -i "/^SUBPROJECTS[\t \+=]/,/^[\t ]\{1,99\}[a-zA-Z]\{1,99\}[\t ]*$/{s/\([a-zA-Z]\)$/\1\t\\\\\n\tmod_ngobjweb/}" \
-				"${S}"/sope-appserver/GNUmakefile
-		fi
-	else
-		# Only remove mod_ngobjweb if it is found in SUBPROJECTS
-		if ( sed -e :a -e '/\\$/N; s/\\\n//; ta' "${S}"/sope-appserver/GNUmakefile 2>/dev/null | grep -q "^[[:space:]]*SUBPROJECTS[\t \+=].*[[:space:]]mod_ngobjweb" ); then
-			sed -i "s/^[\t ]*mod_ngobjweb[\t ]*$/\n/;/^[\t ]*mod_ngobjweb[\t ]*\\\\$/d" \
-				"${S}"/sope-appserver/GNUmakefile
-		fi
-	fi
-
+#	if use apache2; then
+#		# Only add mod_ngobjweb if it is not already in SUBPROJECTS
+#		if ! ( sed -e :a -e '/\\$/N; s/\\\n//; ta' "${S}"/sope-appserver/GNUmakefile 2>/dev/null | grep -q "^[[:space:]]*SUBPROJECTS[\t \+=].*[[:space:]]mod_ngobjweb" ); then
+#			sed -i "/^SUBPROJECTS[\t \+=]/,/^[\t ]\{1,99\}[a-zA-Z]\{1,99\}[\t ]*$/{s/\([a-zA-Z]\)$/\1\t\\\\\n\tmod_ngobjweb/}" \
+#				"${S}"/sope-appserver/GNUmakefile
+#		fi
+#	else
+#		# Only remove mod_ngobjweb if it is found in SUBPROJECTS
+#		if ( sed -e :a -e '/\\$/N; s/\\\n//; ta' "${S}"/sope-appserver/GNUmakefile 2>/dev/null | grep -q "^[[:space:]]*SUBPROJECTS[\t \+=].*[[:space:]]mod_ngobjweb" ); then
+#			sed -i "s/^[\t ]*mod_ngobjweb[\t ]*$/\n/;/^[\t ]*mod_ngobjweb[\t ]*\\\\$/d" \
+#				"${S}"/sope-appserver/GNUmakefile
+#		fi
+#	fi
+	# cd "${S}"
 	gnustep-base_src_prepare
 }
 
 src_configure() {
 	egnustep_env
 	local myconf
-	if use libFoundation; then
-		myconf="${myconf} --frameworks=libFoundation"
-		cd "${S}"/libFoundation
-		./configure \
-			--prefix=/usr \
-			$(use_enable debug) \
-			--with-gnustep || die "configure libFoundation failed"
-	fi
+#	if use libFoundation; then
+#		myconf="${myconf} --frameworks=libFoundation"
+#		cd "${S}"/libFoundation
+#		./configure \
+#			--prefix=/usr \
+#			$(use_enable debug) \
+#			--with-gnustep || die "configure libFoundation failed"
+#	fi
 	cd "${S}"
+	
 	./configure \
-		$(use_enable debug) \
-		$(use_enable debug strip) \
-		--with-gnustep ${myconf} || die "configure failed"
+		--enable-debug \
+		--with-gnustep \
+		--disable-strip || die "configure failed"
+		#$(use_enable debug) \
+		#$(use_enable debug strip) \
+		#--with-gnustep ${myconf} || die "configure failed"
 }
 
 src_compile() {
 	egnustep_env
 	local myconf
-	if use libFoundation; then
-		cd "${S}"/libFoundation
-		CFLAGS="${CFLAGS} -Wno-import" egnustep_make
-		cd "${S}"
-	fi
+#	if use libFoundation; then
+#		cd "${S}"/libFoundation
+#		CFLAGS="${CFLAGS} -Wno-import" egnustep_make
+#		cd "${S}"
+#	fi
 	if use apache2; then
 		myconf="${myconf} apxs=/usr/sbin/apxs"
 		myconf="${myconf} apr=/usr/bin/apr-1-config"

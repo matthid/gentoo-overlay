@@ -16,7 +16,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="postgres mysql logrotate"
-DEPEND="net-libs/sope[ldap,mysql?,postgres?]
+DEPEND="=gnustep-libs/sope-${MY_PV}[ldap,mysql?,postgres?]
 	!mysql? ( !postgres? ( virtual/postgresql-base ) )
 	dev-libs/libmemcached
 	net-nds/openldap"
