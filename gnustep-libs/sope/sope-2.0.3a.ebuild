@@ -69,21 +69,21 @@ src_prepare() {
 	#epatch "${FILESDIR}"/${PN}-r1660-NSNull+misc.m.patch
 	#epatch "${FILESDIR}"/${PN}-r1660-LDAP_deprecated.patch
 
-#	if use apache2; then
-#		# Only add mod_ngobjweb if it is not already in SUBPROJECTS
-#		if ! ( sed -e :a -e '/\\$/N; s/\\\n//; ta' "${S}"/sope-appserver/GNUmakefile 2>/dev/null | grep -q "^[[:space:]]*SUBPROJECTS[\t \+=].*[[:space:]]mod_ngobjweb" ); then
-#			sed -i "/^SUBPROJECTS[\t \+=]/,/^[\t ]\{1,99\}[a-zA-Z]\{1,99\}[\t ]*$/{s/\([a-zA-Z]\)$/\1\t\\\\\n\tmod_ngobjweb/}" \
-#				"${S}"/sope-appserver/GNUmakefile
-#		fi
-#	else
-#		# Only remove mod_ngobjweb if it is found in SUBPROJECTS
-#		if ( sed -e :a -e '/\\$/N; s/\\\n//; ta' "${S}"/sope-appserver/GNUmakefile 2>/dev/null | grep -q "^[[:space:]]*SUBPROJECTS[\t \+=].*[[:space:]]mod_ngobjweb" ); then
-#			sed -i "s/^[\t ]*mod_ngobjweb[\t ]*$/\n/;/^[\t ]*mod_ngobjweb[\t ]*\\\\$/d" \
-#				"${S}"/sope-appserver/GNUmakefile
-#		fi
-#	fi
-	# cd "${S}"
-	gnustep-base_src_prepare
+	if use apache2; then
+		# Only add mod_ngobjweb if it is not already in SUBPROJECTS
+		if ! ( sed -e :a -e '/\\$/N; s/\\\n//; ta' "${S}"/sope-appserver/GNUmakefile 2>/dev/null | grep -q "^[[:space:]]*SUBPROJECTS[\t \+=].*[[:space:]]mod_ngobjweb" ); then
+			sed -i "/^SUBPROJECTS[\t \+=]/,/^[\t ]\{1,99\}[a-zA-Z]\{1,99\}[\t ]*$/{s/\([a-zA-Z]\)$/\1\t\\\\\n\tmod_ngobjweb/}" \
+				"${S}"/sope-appserver/GNUmakefile
+		fi
+	else
+		# Only remove mod_ngobjweb if it is found in SUBPROJECTS
+		if ( sed -e :a -e '/\\$/N; s/\\\n//; ta' "${S}"/sope-appserver/GNUmakefile 2>/dev/null | grep -q "^[[:space:]]*SUBPROJECTS[\t \+=].*[[:space:]]mod_ngobjweb" ); then
+			sed -i "s/^[\t ]*mod_ngobjweb[\t ]*$/\n/;/^[\t ]*mod_ngobjweb[\t ]*\\\\$/d" \
+				"${S}"/sope-appserver/GNUmakefile
+		fi
+	fi
+	cd "${S}"
+	gnustep-base_src_prepare || die "preparing source failed"
 }
 
 src_configure() {
@@ -98,17 +98,22 @@ src_configure() {
 #			--with-gnustep || die "configure libFoundation failed"
 #	fi
 	cd "${S}"
-	
+
+	ewarn "--with-gnustep=${myconf}"	
+#		--prefix=${D} \
 	./configure \
 		--enable-debug \
-		--with-gnustep \
+		--with-gnustep ${myconf}  \
 		--disable-strip || die "configure failed"
+
+
 		#$(use_enable debug) \
 		#$(use_enable debug strip) \
 		#--with-gnustep ${myconf} || die "configure failed"
 }
 
 src_compile() {
+	cd "${S}"
 	egnustep_env
 	local myconf
 #	if use libFoundation; then
@@ -156,13 +161,24 @@ src_test() {
 }
 
 src_install() {
+	cd "${S}"
 	newenvd "${FILESDIR}"/sope.envd 99sope \
 		|| die "Failed installing env.d script"
-	gnustep-base_src_install
+
+	if use apache2; then
+	       # Only remove mod_ngobjweb if it is found in SUBPROJECTS
+	       if ( sed -e :a -e '/\\$/N; s/\\\n//; ta' "${S}"/sope-appserver/GNUmakefile 2>/dev/null | grep -q "^[[:space:]]*SUBPROJECTS[\t \+=].*[[:space:]]mod_ngobjweb" ); then
+	       	    	sed -i "s/^[\t ]*mod_ngobjweb[\t ]*$/\n/;/^[\t ]*mod_ngobjweb[\t ]*\\\\$/d" \
+			    "${S}"/sope-appserver/GNUmakefile
+		fi
+	fi
+	
+	gnustep-base_src_install || die "failed to install source"
+	
 	use apache2 && apache-module_src_install
 }
 
 pkg_postinst() {
-	gnustep-base_pkg_postinst
+	gnustep-base_pkg_postinst || die "failed to postinst"
 	use apache2 && apache-module_pkg_postinst
 }
