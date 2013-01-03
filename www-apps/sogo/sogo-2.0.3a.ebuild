@@ -11,12 +11,12 @@ MY_PV="${PV/_/}"
 
 DESCRIPTION="Groupware server built around OpenGroupware.org and the SOPE application server"
 HOMEPAGE="http://sogo.opengroupware.org/"
-SRC_URI="http://www.scalableogo.org/files/downloads/${MY_PN}/Sources/${MY_PN}-${MY_PV}.tar.gz"
+SRC_URI="http://www.sogo.nu/files/downloads/${MY_PN}/Sources/${MY_PN}-${MY_PV}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="postgres mysql logrotate"
-DEPEND="gnustep-libs/sope[ldap,mysql?,postgres?]
+DEPEND="net-libs/sope[ldap,mysql?,postgres?]
 	!mysql? ( !postgres? ( virtual/postgresql-base ) )
 	dev-libs/libmemcached
 	net-nds/openldap"
