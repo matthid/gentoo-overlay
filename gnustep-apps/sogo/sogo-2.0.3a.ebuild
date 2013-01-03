@@ -98,7 +98,7 @@ pkg_postinst() {
 	gnustep-base_pkg_postinst
 	elog
 	elog "Now follow the steps from the SOGo documentation:"
-	elog "http://www.inverse.ca/contributions/sogo/documentation.html#c803"
+	elog "http://www.sogo.nu/files/docs/SOGo%20Installation%20Guide.pdf"
 	elog "The sogo user home directory is /var/lib/sogo"
 	elog
 	elog "Then you can start/stop sogo with /etc/init.d/sogod"
