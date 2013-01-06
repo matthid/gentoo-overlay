@@ -8,7 +8,7 @@ inherit eutils
 
 DESCRIPTION="Cyrus SASL library for Lua 5.1"
 HOMEPAGE="https://github.com/JorjBauer/${PN}"
-SRC_URI="https://github.com/JorjBauer/lua-cyrussasl/archive/v${PV}.tar.gz"
+SRC_URI="https://github.com/JorjBauer/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 KEYWORDS="~amd64"
 LICENSE="BSD"
 SLOT="0"
