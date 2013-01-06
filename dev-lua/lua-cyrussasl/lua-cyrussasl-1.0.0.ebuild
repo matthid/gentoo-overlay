@@ -18,7 +18,7 @@ DEPEND="
 	dev-libs/cyrus-sasl"
 RDEPEND="${DEPEND}"
 
-S=${WORKDIR}/${P}
+# S=${WORKDIR}/${P}
 
 src_prepare() {
 	epatch "${FILESDIR}/${PN}-update_makefile.patch"
@@ -32,10 +32,24 @@ src_configure() {
 	return
 }
 
-src_compile() {
-	
-    if [ -f Makefile ] || [ -f GNUmakefile ] || [ -f makefile ]; then
-        emake || die "emake failed"
-    fi
-}
+src_install() {
 
+	# Create the usr/lib/lua/5.1
+	mkdir -p ${D}usr/lib/lua/5.1
+	if [[ -f Makefile ]] || [[ -f GNUmakefile]] || [[ -f makefile ]] ; then
+		emake DESTDIR="${D}" install
+	fi
+
+	if ! declare -p DOCS >/dev/null 2>&1 ; then
+		local d
+		for d in README* ChangeLog AUTHORS NEWS TODO CHANGES THANKS BUGS \
+				FAQ CREDITS CHANGELOG ; do
+			[[ -s "${d}" ]] && dodoc "${d}"
+		done
+	# TODO: wrong "declare -a" command...
+	elif declare -p DOCS | grep -q `^declare -a` ; then
+		dodoc "${DOCS[@]}"
+	else
+		dodoc ${DOCS}
+	fi
+}
