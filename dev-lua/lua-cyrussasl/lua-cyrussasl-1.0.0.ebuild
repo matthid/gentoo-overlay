@@ -35,8 +35,9 @@ src_configure() {
 src_install() {
 
 	# Create the usr/lib/lua/5.1
-	mkdir -p ${D}usr/lib/lua/5.1
-	if [[ -f Makefile ]] || [[ -f GNUmakefile]] || [[ -f makefile ]] ; then
+	mkdir -p "${D}usr/lib/lua/5.1"
+
+	if [[ -f Makefile ]] || [[ -f GNUmakefile ]] || [[ -f makefile ]] ; then
 		emake DESTDIR="${D}" install
 	fi
 
