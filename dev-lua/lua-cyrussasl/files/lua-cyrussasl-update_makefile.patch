@@ -1,21 +1,22 @@
 --- Makefile	Tue Jul  6 17:01:15 2010
-+++ Makefile	Sun Jan  6 13:32:19 2013
++++ Makefile	Sun Jan  6 17:35:21 2013
 @@ -1,15 +1,7 @@
 -# Linux (Debian Lenny)
 -#CFLAGS=-g -O2 -fpic -I/usr/include/lua5.1
 -#LDFLAGS=-O -shared -fpic -lsasl2
 -#LUAPATH=/usr/share/lua/5.1
 -#CPATH=/usr/lib/lua/5.1
-+# Linux (Gentoo)
- 
+-
 -# MacOS
 -CFLAGS=-g -Wall -O2
 -LDFLAGS=-bundle -undefined dynamic_lookup -lsasl2
 -MACOSX_VERSION=10.5
 -LUAPATH=/usr/local/share/lua/5.1
 -CPATH=/usr/local/lib/lua/5.1
++# Linux (Gentoo)
++
 +LUAPATH=/usr/share/lua/5.1
-+CPATH=usr/lib/lua/5.1
++CPATH=/usr/lib/lua/5.1
  
  #########################################################
  #
@@ -28,3 +29,12 @@
  
  clean:
  	rm -f *.o *.so *~
+@@ -37,7 +29,7 @@
+ 	rm -f $(BUILD_VERSION) $(BRANCH_VERSION)
+ 
+ $(TARGET): version $(OBJS)
+-	$(CC) $(LDFLAGS) -o $(TARGET) $(OBJS)
++	$(CC) $(OBJS) $(LDFLAGS) -o $(TARGET) 
+ 
+ .c.o:
+ 	$(CC) $(CFLAGS) -DVERSION="\"$$(cat VERSION).$$(cat $(BRANCH_VERSION))-$$(cat $(BUILD_VERSION))\"" -fno-common -c $< -o $@
