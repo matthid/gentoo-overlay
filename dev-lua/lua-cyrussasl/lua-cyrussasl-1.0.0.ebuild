@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit eutils
+inherit eutils flag-o-matic
 
 DESCRIPTION="Cyrus SASL library for Lua 5.1"
 HOMEPAGE="https://github.com/JorjBauer/${PN}"
@@ -25,13 +25,14 @@ src_prepare() {
 }
 
 src_configure() {
+	append-flags "-I/usr/include/lua5.1 -fPIC -g"  || die "could not append flags"
+	append-ldflags "-shared -fPIC -lsasl2"  || die "could not append ldflags"
+
 	# No configure script, only a simple Makefile
 	return
 }
 
 src_compile() {
-	append-flags "-I/usr/include/lua5.1 -fPIC -g"  || die "could not append flags"
-	append-ldflags "-shared -fPIC -lsasl2"  || die "could not append ldflags"
 	
     if [ -f Makefile ] || [ -f GNUmakefile ] || [ -f makefile ]; then
         emake || die "emake failed"

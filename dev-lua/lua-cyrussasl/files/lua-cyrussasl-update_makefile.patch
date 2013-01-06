@@ -1,5 +1,5 @@
---- Makefile.orig	Tue Jul  6 17:01:15 2010
-+++ Makefile.modified	Sun Jan  6 13:32:19 2013
+--- Makefile	Tue Jul  6 17:01:15 2010
++++ Makefile	Sun Jan  6 13:32:19 2013
 @@ -1,15 +1,7 @@
 -# Linux (Debian Lenny)
 -#CFLAGS=-g -O2 -fpic -I/usr/include/lua5.1
@@ -15,7 +15,7 @@
 -LUAPATH=/usr/local/share/lua/5.1
 -CPATH=/usr/local/lib/lua/5.1
 +LUAPATH=/usr/share/lua/5.1
-+CPATH=/usr/lib/lua/5.1
++CPATH=usr/lib/lua/5.1
  
  #########################################################
  #
