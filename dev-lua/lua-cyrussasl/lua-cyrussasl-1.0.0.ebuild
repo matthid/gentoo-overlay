@@ -25,9 +25,16 @@ src_prepare() {
 }
 
 src_configure() {
-	append-flags "-I/usr/include/lua5.1 -fPIC -g"
-	append-ldflags "-shared -fPIC -lsasl2"
-	
 	# No configure script, only a simple Makefile
 	return
 }
+
+src_compile() {
+	append-flags "-I/usr/include/lua5.1 -fPIC -g"  || die "could not append flags"
+	append-ldflags "-shared -fPIC -lsasl2"  || die "could not append ldflags"
+	
+    if [ -f Makefile ] || [ -f GNUmakefile ] || [ -f makefile ]; then
+        emake || die "emake failed"
+    fi
+}
+
