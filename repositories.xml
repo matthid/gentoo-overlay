@@ -4,7 +4,7 @@
   <repo quality="experimental" status="unofficial">
     <name><![CDATA[dragon]]></name>
     <description lang="en"><![CDATA[Personal overlay with some ebuilds I missed]]></description>
-    <homepage>http://yaaf.de/projects/portage</homepage>
+    <homepage>http://yaaf.no-ip.org:3000/projects/portage</homepage>
     <owner type="person">
       <email>matthi.d@gmail.com</email>
       <name><![CDATA[Matthias]]></name>
