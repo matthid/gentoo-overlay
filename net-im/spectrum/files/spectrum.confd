@@ -1,0 +1,8 @@
+# /etc/conf.d/spectrum.PROTOCOL: config file for spectrum PROTOCOL transport
+
+# Configfile
+CONFFILE="/etc/spectrum/PROTOCOL.cfg"
+
+# PID
+PIDFILE="/var/run/spectrum/PROTOCOL.pid"
+
