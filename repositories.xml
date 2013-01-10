@@ -9,6 +9,8 @@
       <email>matthi.d@gmail.com</email>
       <name><![CDATA[Matthias]]></name>
     </owner>
+    <source type="git">git://github.com/matthid/gentoo-overlay.git</source>
+    <source type="git">git@github.com:matthid/gentoo-overlay.git</source>
     <source type="git">git@yaaf.no-ip.org:portage.git</source>
   </repo>
 </repositories>
