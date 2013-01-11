@@ -58,7 +58,7 @@ CDEPEND="~dev-java/swt-${SWT}:${SLOT}
 	java-virtuals/jetty-server:6
 	x86? ( gnome? ( gnome-base/gconf ) )"
 RDEPEND="${CDEPEND}
-	>=virtual/jre-1.5
+ 	>=virtual/jre-1.5
 	media-libs/libpng:1.2"
 
 DEPEND="${CDEPEND}
@@ -85,10 +85,10 @@ DEPEND="${CDEPEND}
 	>=dev-java/ant-swing-${ANT}
 	>=dev-java/ant-testutil-${ANT}
 	|| (
+		>=virtual/jdk-1.7
 		=dev-java/sun-jdk-1.6.0*
-		=dev-java/icedtea-7.2*
 	)"
-#		=virtual/jdk:1.7
+#		=dev-java/icedtea-7*
 
 OSGI_DEPENDENCIES=(
 	'com.ibm.icu - icu4j-4.4'
