@@ -14,9 +14,8 @@ KEYWORDS="~amd64"
 LICENSE="Ms-PL"
 SLOT="0"
 IUSE=""
-#Because F# is only available with 2.10
 DEPEND="
-	>=dev-lang/mono-2.10.10
+	>=dev-lang/mono-2.10
 	dev-lang/fsharp"
 
 
