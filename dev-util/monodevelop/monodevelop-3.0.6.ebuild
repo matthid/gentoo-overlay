@@ -14,7 +14,7 @@ SLOT="0"
 KEYWORDS="amd64 x86"
 IUSE="+subversion +git"
 
-RDEPEND=">=dev-lang/mono-2.10.9
+SDEPEND=">=dev-lang/mono-2.10.9
 	>=dev-dotnet/gconf-sharp-2.24.0
 	>=dev-dotnet/glade-sharp-2.12.9
 	>=dev-dotnet/gnome-sharp-2.24.0
@@ -37,6 +37,9 @@ RDEPEND=">=dev-lang/mono-2.10.9
 	!<dev-util/monodevelop-debugger-gdb-$(get_version_component_range 1-2)
 	!<dev-util/monodevelop-debugger-mdb-$(get_version_component_range 1-2)
 	!<dev-util/monodevelop-vala-$(get_version_component_range 1-2)"
+# Xterm is required by the debugger
+RDEPEND="${SDEPEND}
+	x11-terms/xterm"
 DEPEND="${RDEPEND}
 	dev-util/intltool
 	virtual/pkgconfig
