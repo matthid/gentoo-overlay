@@ -38,9 +38,9 @@ JABBER_ETC="/etc/jabber"
 JABBER_SPOOL="/var/spool/jabber"
 
 src_prepare() {
-	epatch "${FILESDIR}/${PN}-0.8.0-cfg.lua.patch"-
+        epatch "${FILESDIR}/${PN}-0.8.0-cfg.lua.patch"
 
-    # Modify config to let prosodyctl work by default
+        # Modify config to let prosodyctl work by default
 	sed -i -e 's/--"posix"/"posix"/' prosody.cfg.lua.dist || die
 
 	sed -i "s!MODULES = \$(DESTDIR)\$(PREFIX)/lib/!MODULES = \$(DESTDIR)\$(PREFIX)/$(get_libdir)/!" Makefile
