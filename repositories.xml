@@ -4,13 +4,13 @@
   <repo quality="experimental" status="unofficial">
     <name><![CDATA[dragon]]></name>
     <description lang="en"><![CDATA[Personal overlay with some ebuilds I missed]]></description>
-    <homepage>http://yaaf.no-ip.org:3000/projects/portage</homepage>
+    <homepage>https://redmine.yaaf.de/projects/portage</homepage>
     <owner type="person">
       <email>matthi.d@gmail.com</email>
       <name><![CDATA[Matthias]]></name>
     </owner>
     <source type="git">git://github.com/matthid/gentoo-overlay.git</source>
     <source type="git">git@github.com:matthid/gentoo-overlay.git</source>
-    <source type="git">git@yaaf.no-ip.org:portage.git</source>
+    <source type="git">git@yaaf.de:portage.git</source>
   </repo>
 </repositories>
