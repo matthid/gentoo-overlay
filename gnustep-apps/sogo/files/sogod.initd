@@ -48,8 +48,12 @@ checkconfig() {
 	else
 		sogod_port="20000"
 	fi
+
 	touch /var/log/sogod.log
 	chown sogo /var/log/sogod.log
+	mkdir /var/run/sogo
+	touch /var/run/sogo/sogo.pid
+	chown sogo /var/run/sogo/sogo.pid
 }
 
 start() {
@@ -58,11 +62,11 @@ start() {
 	start-stop-daemon \
 		--start \
 		--exec ${sogod_bin} \
-		--chuid sogo \
+		--user sogo \
 		--make-pidfile \
 		--background \
 		--pidfile /var/run/sogod.pid \
-		-- -WOPort ${sogod_port}
+		-- -WOPort ${sogod_port} -WOLogFile /var/log/sogod.log -WOPidFile /var/run/sogo/sogo.pid
 	eend ${?}
 }
 
@@ -70,5 +74,7 @@ stop() {
 	ebegin "Stopping SOGo service"
 	start-stop-daemon --stop \
 		--pidfile /var/run/sogod.pid
+	start-stop-daemon --stop \
+		--pidfile /var/run/sogo/sogo.pid
 	eend ${?}
 }
