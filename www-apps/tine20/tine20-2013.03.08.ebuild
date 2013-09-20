@@ -4,26 +4,53 @@
 
 EAPI="2"
 
-inherit webapp depend.php
+inherit webapp depend.php git-2 elisp-common autotools dotnet eutils
 
-DESCRIPTION="phpLDAPadmin is a web-based tool for managing all aspects of your LDAP server."
-HOMEPAGE="http://phpldapadmin.sourceforge.net"
-SRC_URI="mirror://sourceforge/${PN}/${P}.tgz"
+DESCRIPTION="GroupWare & CRM."
+HOMEPAGE="http://www.tine20.org/home.html"
+EGIT_REPO_URI="http://git.tine20.org/git/tine20"
 
+# Trying to use this ebuild for all versions
+MAJOR=$(get_version_component_range 1)
+if [ "$MAJOR" -eq "9999" ]
+then
+	LIVE_EBUILD=true
+else
+	LIVE_EBUILD=false
+	MY_PREVERSION=$(get_version_component_range 1-2)
+	SERVICE_RELEASE_NO=$(get_version_component_range 3)
+	# Check for live ebuild for a specific release for example "2013.03"
+	if [ "$SERVICE_RELEASE_NO" -eq "9999" ]
+	then
+		MY_PV=$MY_PREVERSION
+		MY_P="${PN}-${MY_PV}"
+		EGIT_BRANCH="$MY_PREVERSION"
+	else
+		MY_PV=$PV
+		MY_P="${PN}-${MY_PV}"
+		# This is a TAG so it should not change
+		EGIT_BRANCH="$PV"
+	fi
+fi
+
+#TODO: Check license
 LICENSE="GPL-2"
 KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~sparc ~x86"
-IUSE=""
+#TODO: Add other databases
+IUSE="memcached mysql ldap logrotate"
 
-RDEPEND="dev-lang/php[hash,ldap,session,xml,nls]
-		 || ( <dev-lang/php-5.3[pcre] >=dev-lang/php-5.3 )"
+RDEPEND="dev-lang/php[ctype,xml,simplexml,gd,iconv,json,crypt,zip]
+		 mysql? (dev-lang/php[mysql,mysqli,pdo] dev-db/mysql)
+		 memcached? ( dev-php/pecl-memcached net-misc/memcached )
+		 ldap? (dev-lang/php[ldap])"
 
 need_httpd_cgi
 need_php_httpd
 
+S="${S}/tine20"
+
 src_prepare() {
-	mv config/config.php.example config/config.php
-	epatch "${FILESDIR}/${PN}-1.2.1.1-fix-magic-quotes.patch"
-	# http://phpldapadmin.git.sourceforge.net/git/gitweb.cgi?p=phpldapadmin/phpldapadmin;a=commit;h=7dc8d57d6952fe681cb9e8818df7f103220457bd
+	cp tine20/config.inc.php.dist tine20/config.inc.php
 }
 
 src_install() {
@@ -31,14 +58,14 @@ src_install() {
 
 	dodoc INSTALL
 
-	# Restrict config file access - bug 280836
-	chown root:apache "config/config.php"
-	chmod 640 "config/config.php"
+	# Restrict config file access
+	chown root:apache "tine20/config.inc.php"
+	chmod 640 "tine20/config.inc.php"
 
 	insinto "${MY_HTDOCSDIR}"
 	doins -r *
 
-	webapp_configfile "${MY_HTDOCSDIR}/config/config.php"
+	webapp_configfile "${MY_HTDOCSDIR}/tine20/config.inc.php"
 	webapp_postinst_txt en "${FILESDIR}"/postinstall2-en.txt
 
 	webapp_src_install
