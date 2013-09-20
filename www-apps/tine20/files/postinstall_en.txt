@@ -1,4 +1,0 @@
-tine20 is installed.  You will need to
-configure it by creating/editing the config file:
-
-${MY_INSTALLDIR}/tine20/config.inc.php

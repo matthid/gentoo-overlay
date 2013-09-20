@@ -4,7 +4,7 @@
 
 EAPI="2"
 
-inherit webapp depend.php git-2 elisp-common autotools dotnet eutils
+inherit webapp depend.php git-2 eutils versionator
 
 DESCRIPTION="GroupWare & CRM."
 HOMEPAGE="http://www.tine20.org/home.html"
@@ -29,7 +29,7 @@ else
 		MY_PV=$PV
 		MY_P="${PN}-${MY_PV}"
 		# This is a TAG so it should not change
-		EGIT_BRANCH="$PV"
+		EGIT_COMMIT="$PV"
 	fi
 fi
 
@@ -37,36 +37,38 @@ fi
 LICENSE="GPL-2"
 KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~sparc ~x86"
 #TODO: Add other databases
-IUSE="memcached mysql ldap logrotate"
+IUSE="memcached mysql ldap"
 
 RDEPEND="dev-lang/php[ctype,xml,simplexml,gd,iconv,json,crypt,zip]
-		 mysql? (dev-lang/php[mysql,mysqli,pdo] dev-db/mysql)
+		 mysql? ( dev-lang/php[mysql,mysqli,pdo] dev-db/mysql )
 		 memcached? ( dev-php/pecl-memcached net-misc/memcached )
-		 ldap? (dev-lang/php[ldap])"
+		 ldap? ( dev-lang/php[ldap] )"
 
 need_httpd_cgi
 need_php_httpd
 
-S="${S}/tine20"
-
 src_prepare() {
-	cp tine20/config.inc.php.dist tine20/config.inc.php
+	cp ${FILESDIR}/config.inc.php tine20/config.inc.php
+	use memcached && epatch "${FILESDIR}/config.inc.php.memcached.patch"
 }
 
 src_install() {
 	webapp_src_preinst
 
-	dodoc INSTALL
+	dodoc "README"
 
 	# Restrict config file access
 	chown root:apache "tine20/config.inc.php"
 	chmod 640 "tine20/config.inc.php"
 
-	insinto "${MY_HTDOCSDIR}"
-	doins -r *
+	cp -r "${S}/tine20/." "${D}${MY_HTDOCSDIR}"
+	mkdir -p "${D}/etc/logrotate.d"
+	cp "${FILESDIR}/tine20_logrotate" "${D}/etc/logrotate.d/tine20"
+	mkdir -p "${D}/var/lib/tine20/files"
 
-	webapp_configfile "${MY_HTDOCSDIR}/tine20/config.inc.php"
-	webapp_postinst_txt en "${FILESDIR}"/postinstall2-en.txt
-
+	webapp_configfile "${MY_HTDOCSDIR}/config.inc.php"
+	webapp_postinst_txt en "${FILESDIR}"/postinstall-en.txt
+	webapp_serverowned "${MY_HTDOCSDIR}/config.inc.php"
+	webapp_serverowned -R "/var/lib/tine20"
 	webapp_src_install
 }
