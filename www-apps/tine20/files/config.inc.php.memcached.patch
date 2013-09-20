@@ -1,0 +1,26 @@
+--- tine20/config.inc.php	2013-09-19 23:18:48.208980615 +0200
++++ tine20/config.inc.php	2013-09-19 23:21:27.818983248 +0200
+@@ -22,6 +22,23 @@
+     'filename' => '/var/log/tine20.log',
+     'priority' => 5,
+   ),
++  'caching' =>
++  array (
++    'active' => true,
++    'lifetime' => 100,
++    'backend' => 'Memcached',
++    'path' => '',
++    'redis' =>
++    array (
++      'host' => 'localhost',
++      'port' => 6379,
++    ),
++    'memcached' =>
++    array (
++      'host' => '127.0.0.1',
++      'port' => 11211,
++    ),
++  ),
+   'tmpdir' => '/tmp',
+   'filesdir' => '/var/lib/tine20/files',
+   'mapPanel' => 0,

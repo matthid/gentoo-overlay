@@ -1,0 +1,6 @@
+/var/log/tine20.log {
+	missingok
+	notifempty
+	create 0664 apache root
+	copytruncate
+}
