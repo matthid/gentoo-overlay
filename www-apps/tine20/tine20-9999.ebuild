@@ -33,8 +33,7 @@ else
 	fi
 fi
 
-#TODO: Check license
-LICENSE="GPL-2"
+LICENSE="AGPL-3 BSD LGPL-2.1 Apache-2.0 LGPL-3 GPL-3"
 KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~sparc ~x86"
 #TODO: Add other databases
 IUSE="memcached mysql ldap"
