@@ -11,21 +11,18 @@ Basically all you have to do is to add https://raw.github.com/matthid/gentoo-ove
 Now just execute:
 
     layman -S
-    layman -a lua
-    layman -a sunrise
-    layman -a gnustep
     layman -a dragon
 
-Add the lua, gnustep and sunrise Overlay because I depend on some packages of those overlays.
+Maybe you also have to add the lua, gnustep and sunrise Overlay because I depend on some packages of those overlays. (If you get some missing ebuild errors)
 
 # Notes
-Contact me: dragon@idoop.de (jabber); matthi.d@gmail.com (email); public@chat.idoop.de (jabber conference)
-http://yaaf.no-ip.org:3000/projects/matthias/wiki (German).
+Contact me: matthid@idoop.de (jabber); matthi.d@gmail.com (email); 
+http://redmine.yaaf.de/projects/matthias/wiki (German).
 
-This Overlay is used to build your own homeserver with Gentoo: http://yaaf.no-ip.org:3000/projects/matthias/wiki/Homeserver (German)
+This Overlay is used to build your own homeserver with Gentoo: http://redmine.yaaf.de/projects/matthias/wiki/Homeserver (German)
 
 Some credits:
 
-* The Sope and SOGo ebuild were originally taken from the gnustep-apps overlay and were updated to the latest sogo Version (http://overlays.gentoo.org/proj/gnustep).
+* The Sope and SOGo ebuild were originally taken from the gnustep-apps overlay and were updated to the latest sogo Version (http://overlays.gentoo.org/proj/gnustep). 
 * The Prosody and Spectrum ebuilds are taken from the wonderfull rion overlay (http://code.google.com/p/rion-overlay).
 * The Eclipse ebuild was taken from the seden overlay (http://gpo.zugaina.org/Overlays/seden)
