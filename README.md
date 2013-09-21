@@ -1,3 +1,15 @@
+# Info
+
+This layman overlay for gentoo linux contains some packages I use myself and are missing/outdated in the portage tree.
+
+Examples / Highlights:
+* Tine20 (!)
+* SOGo-2.0.7 (!)
+* gitflow (!)
+* prosody with sasl support (!)
+* Eclipse with icedtea support
+* Some testing ebuilds for mono before I push them on gentoo-dotnet (layman -a dotnet)
+
 # Installation
 
 Follow http://www.gentoo-wiki.info/TIP_Sync_your_private_overlay.
