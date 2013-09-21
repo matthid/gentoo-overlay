@@ -8,12 +8,19 @@ inherit webapp depend.php git-2 eutils versionator
 
 DESCRIPTION="GroupWare & CRM."
 HOMEPAGE="http://www.tine20.org/home.html"
+
+
+
+LICENSE="AGPL-3 BSD LGPL-2.1 Apache-2.0 LGPL-3 GPL-3"
+#TODO: Add other databases
+IUSE="memcached mysql ldap"
 EGIT_REPO_URI="http://git.tine20.org/git/tine20"
 
 # Trying to use this ebuild for all versions
 MAJOR=$(get_version_component_range 1)
 if [ "$MAJOR" -eq "9999" ]
 then
+	KEYWORDS=
 	LIVE_EBUILD=true
 else
 	LIVE_EBUILD=false
@@ -22,21 +29,20 @@ else
 	# Check for live ebuild for a specific release for example "2013.03"
 	if [ "$SERVICE_RELEASE_NO" -eq "9999" ]
 	then
+		KEYWORDS=
 		MY_PV=$MY_PREVERSION
 		MY_P="${PN}-${MY_PV}"
 		EGIT_BRANCH="$MY_PREVERSION"
 	else
+		# This is a fixed checkout, so we use keywords here
+		KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~sparc ~x86"
+		# This is not github so we can't downlaod a tar.gz
 		MY_PV=$PV
 		MY_P="${PN}-${MY_PV}"
 		# This is a TAG so it should not change
 		EGIT_COMMIT="$PV"
 	fi
 fi
-
-LICENSE="AGPL-3 BSD LGPL-2.1 Apache-2.0 LGPL-3 GPL-3"
-KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~sparc ~x86"
-#TODO: Add other databases
-IUSE="memcached mysql ldap"
 
 RDEPEND="dev-lang/php[ctype,xml,simplexml,gd,iconv,json,crypt,zip]
 		 mysql? ( dev-lang/php[mysql,mysqli,pdo] dev-db/mysql )
