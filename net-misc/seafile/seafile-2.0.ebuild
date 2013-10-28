@@ -4,7 +4,7 @@
 
 EAPI=4
 
-inherit eutils python autotools git-2
+inherit eutils python autotools versionator
 
 DESCRIPTION="Cloud file syncing software"
 HOMEPAGE="http://www.seafile.com"
@@ -12,15 +12,19 @@ HOMEPAGE="http://www.seafile.com"
 MAJOR=$(get_version_component_range 1)
 if [ "$MAJOR" -eq "9999" ]
 then
+	inherit git-2
 	EGIT_REPO_URI="git://github.com/haiwen/seafile.git"
 	KEYWORDS=
 	LIVE_EBUILD=true
 else
 # Wow they really don't have any naming convetions whatsoever
-	SRC_URI="https://github.com/haiwen/seafile/archive/server-2.0.tar.gz => ${P}.tar.gz"
+
+	SRC_URI="https://github.com/haiwen/seafile/archive/server-2.0.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~x86"
 	LIVE_EBUILD=false
 fi
+
+
 S=${WORKDIR}
 
 LICENSE="GPL-2"
