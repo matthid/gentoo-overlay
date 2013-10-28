@@ -4,7 +4,7 @@
 
 EAPI=4
 
-inherit eutils autotools git-2 python versionator
+inherit eutils autotools git-2 python
 
 DESCRIPTION="Networking library for Seafile"
 HOMEPAGE="http://www.seafile.com"
@@ -33,16 +33,16 @@ DEPEND="net-libs/libsearpc
 
 RDEPEND=""
 
+src_unpack() {
+	git-2_src_unpack
+}
+
 if [ "$MAJOR" -eq "9999" ]
 then
-	src_unpack() {
-		git-2_src_unpack
+	src_prepare() {
+		./autogen.sh || die "Autogen failed"
 	}
 fi
-
-src_prepare() {
-	./autogen.sh || die "Autogen failed"
-}
 
 src_configure() {
 	econf $(use_enable demo compile-demo) \

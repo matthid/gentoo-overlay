@@ -4,16 +4,25 @@
 
 EAPI=4
 
-inherit eutils autotools git-2 python
+inherit eutils autotools git-2 python versionator
 
 DESCRIPTION="RPC library for Seafile"
 HOMEPAGE="http://www.seafile.com"
-EGIT_REPO_URI="git://github.com/haiwen/libsearpc.git"
+
+# Trying to use this ebuild for all versions
+MAJOR=$(get_version_component_range 1)
+if [ "$MAJOR" -eq "9999" ]
+then
+	EGIT_REPO_URI="git://github.com/haiwen/libsearpc.git"
+	KEYWORDS=
+else
+	# Nothing available jet
+	KEYWORDS="~x86"
+fi
 S=${WORKDIR}
 
 SLOT="0"
 LICENSE="GPL-2"
-KEYWORDS="~x86"
 IUSE="demo"
 
 DEPEND=">=dev-lang/python-2.5
@@ -27,9 +36,12 @@ pkg_setup() {
 	python_pkg_setup
 }
 
-src_unpack() {
-	git-2_src_unpack
-}
+if [ "$MAJOR" -eq "9999" ]
+then
+	src_unpack() {
+		git-2_src_unpack
+	}
+fi
 
 src_prepare() {
 	./autogen.sh || die "Autogen failed"

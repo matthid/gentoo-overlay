@@ -15,13 +15,11 @@ then
 	inherit git-2
 	EGIT_REPO_URI="git://github.com/haiwen/seafile.git"
 	KEYWORDS=
-	LIVE_EBUILD=true
 else
 # Wow they really don't have any naming convetions whatsoever
 
 	SRC_URI="https://github.com/haiwen/seafile/archive/server-2.0.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~x86"
-	LIVE_EBUILD=false
+	KEYWORDS="~x86 ~amd64"
 fi
 
 

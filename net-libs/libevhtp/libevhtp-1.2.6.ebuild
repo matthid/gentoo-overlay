@@ -4,7 +4,7 @@
 
 EAPI=4
 
-inherit eutils cmake-utils git-2 versionator
+inherit eutils cmake-utils git-2
 
 DESCRIPTION="Flexible replacement for libevent's httpd API"
 HOMEPAGE="https://github.com/ellzey/libevhtp/"
