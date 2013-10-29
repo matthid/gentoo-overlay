@@ -106,8 +106,8 @@ src_install() {
 		rm seahub.tar.gz
 		
 	fi
-	mkdir -p "${D}/var/lib/seafile"	
-	mv "${S}/scripts" "${D}/var/lib/seafile/scripts"
+	mkdir -p "${D}/var/lib/seafile/default/seafile-server-${PV}"	
+	mv "${S}/scripts/*" "${D}/var/lib/seafile/default/seafile-server-${PV}/"
 
 	mkdir -p "${D}/var/lib/seafile/root"
 	mv ${D}/seafile "${D}/var/lib/seafile/root"
@@ -121,12 +121,22 @@ pkg_postinst() {
 	if use server ; then
 		elog 
 		elog "Seafile server installed."
-		elog "You have to run \"seafile-admin setup\" in the /var/lib/seafile/default/ directory as seafile user"
-		elog "After that you can still edit your config in"
-		elog "/etc/seafile/default/"
-		elog "After configuration setup apache: https://github.com/haiwen/seafile/wiki/Deploy-Seafile-with-apache"
-		elog "If you want you can use mysql: https://github.com/haiwen/seafile/wiki/Download-and-Setup-Seafile-Server-with-MySQL"
-		elog "After all the steps above you can start your server with \"/etc/init.d/seafile-server start\""
+		elog "To configure your seafile instance do:"
+		elog "cd /var/lib/seafile/default"
+		elog "su -s /bin/bash seafile"
+		elog "seafile-admin setup"
+		elog
+		elog "To setup you seafile instance with mysql run:"
+		elog "su -s /bin/bash seafile"
+		elog "cd /var/lib/seafile/default"
+		elog "../scripts/setup-seafile-mysql.sh"
+		elog
+		elog "Start your seafile server with:"
+		elog "etc/init.d/seafile-server start"
+		elog
+		elog "For reference see also:"
+		elog "https://github.com/haiwen/seafile/wiki/Deploy-Seafile-with-apache"
+		elog "https://github.com/haiwen/seafile/wiki/Download-and-Setup-Seafile-Server-with-MySQL"
 		elog 
 		
 	fi

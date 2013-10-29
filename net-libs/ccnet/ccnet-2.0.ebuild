@@ -60,13 +60,22 @@ src_configure() {
 		|| die "econf failed"
 }
 
-src_install() {
+src_compile() {
 # parallel build broken :( 
   	ewarn "parallel build is disabled for this package (broken)."
-	emake -j1 DESTDIR="${D}" install
-	
-	
+	emake -j1
+}
 
-        mkdir -p "${D}/var/lib/seafile/root"
-        mv ${D}/ccnet "${D}/var/lib/seafile/root"
+src_install() {
+	emake DESTDIR="${D}" install
+
+
+	# Prevent root /ccnet directory...
+	if [ -d ${D}/ccnet ]; then
+	   mkdir -p "${D}/var/lib/seafile/root"
+           mv ${D}/ccnet "${D}/var/lib/seafile/root"
+	fi
+
+#	mkdir -p "${D}/var/lib/seafile/default/seafile-server/seafile-server-${PV}"
+#	mv "${S}" "${D}/var/lib/seafile/default/seafile-server/seafile-server-${PV}/ccnet"
 }

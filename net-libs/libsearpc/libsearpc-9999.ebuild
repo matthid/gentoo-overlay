@@ -65,5 +65,7 @@ src_install() {
 			FAQ CREDITS CHANGELOG ; do
 		[[ -s "${d}" ]] && dodoc "${d}"
 	done
+	
+#	mv "${S}" "${D}/var/lib/seafile/default/seafile-server/seafile-server-2.0/libsearpc"
 }
 

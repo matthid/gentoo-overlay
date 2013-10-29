@@ -82,36 +82,45 @@ src_configure() {
 }
 
 src_compile() {
-	ewarn "parallel build is disabled for this package (build broken)."
+	ewarn "Parallel build disabled to prevent errors (broken)."
 	emake -j1 || die "emake failed"
+	
 }
 
 src_install() {
 	emake DESTDIR="${D}" install
-	
+
+
 	if use server ; then
 		newinitd "${FILESDIR}"/seafile.initd seafile-server \
 			|| die "Init script installation failed"
 			
 		# Configure default instance
+		mkdir -p "${D}/var/lib/seafile/default"	
+		mv "${S}/scripts" "${D}/var/lib/seafile/default/seafile-server"
+		ln /usr/bin/seafile "${D}/var/lib/seafile/default/seafile-server/seafile"
+
 		
-		mkdir -p ${D}/var/lib/seafile/default
-		cd ${D}/var/lib/seafile/default
-		
-		mkdir  "${D}/var/lib/seafile/default/seafile-server"
-		cd "seafile-server"
+		cd "${D}/var/lib/seafile/default/seafile-server"
 		wget https://seafile.googlecode.com/files/seahub-1.8.1.tar.gz --output-document seahub.tar.gz
 		tar xzf seahub.tar.gz
 		mv seahub-1.8.1 seahub
 		rm seahub.tar.gz
 		
 	fi
-	mkdir -p "${D}/var/lib/seafile/default/seafile-server-${PV}"	
-	mv "${S}/scripts/*" "${D}/var/lib/seafile/default/seafile-server-${PV}/"
+	
+        # Prevent root /seafile directory...
+        if [ -d ${D}/seafile ]; then
+           mkdir -p "${D}/var/lib/seafile/root"
+           mv ${D}/seafile "${D}/var/lib/seafile/root"
+        fi
 
-	mkdir -p "${D}/var/lib/seafile/root"
-	mv ${D}/seafile "${D}/var/lib/seafile/root"
-	rm ${D}/seaserv "${D}/var/lib/seafile/root"
+        # Prevent root /seaserv directory...
+        if [ -d ${D}/seaserv ]; then
+           mkdir -p "${D}/var/lib/seaserv/root"
+           mv ${D}/seaserv "${D}/var/lib/seafile/root"
+        fi
+
 	chown -R seafile:seafile "${D}/var/lib/seafile"
 }
 
@@ -129,7 +138,7 @@ pkg_postinst() {
 		elog "To setup you seafile instance with mysql run:"
 		elog "su -s /bin/bash seafile"
 		elog "cd /var/lib/seafile/default"
-		elog "../scripts/setup-seafile-mysql.sh"
+		elog "seafile-server/setup-seafile-mysql.sh"
 		elog
 		elog "Start your seafile server with:"
 		elog "etc/init.d/seafile-server start"
