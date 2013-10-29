@@ -32,11 +32,12 @@ SLOT="0"
 IUSE="gtk server httpserver client python"
 
 DEPEND=">=dev-lang/python-2.5[sqlite]
+	>=dev-python/django-1.5
 	net-libs/ccnet
 	dev-python/simplejson
 	dev-python/mako
 	dev-python/webpy
-	dev-python/Djblets
+	<dev-python/Djblets-0.7
 	dev-python/chardet
 	www-servers/gunicorn
 	httpserver? ( net-libs/libevhtp )
