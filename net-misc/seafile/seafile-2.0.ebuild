@@ -112,8 +112,10 @@ src_install() {
 		rm seahub.tar.gz
 		
 	fi
-	rm -rf ${D}/seafile
-	rm -rf ${D}/seaserv
+	mkdir -p "${D}/var/lib/seafile/root"
+	mv ${D}/seafile "${D}/var/lib/seafile/root"
+	rm ${D}/seaserv "${D}/var/lib/seafile/root"
+	chown -R seafile:seafile "${D}/var/lib/seafile"
 }
 
 

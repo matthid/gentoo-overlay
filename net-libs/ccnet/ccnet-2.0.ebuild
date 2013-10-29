@@ -64,6 +64,7 @@ src_install() {
 	emake DESTDIR="${D}" install
 	
 	
-	
-	rm -rf ${D}/ccnet
+
+        mkdir -p "${D}/var/lib/seafile/root"
+        mv ${D}/ccnet "${D}/var/lib/seafile/root"
 }
