@@ -19,56 +19,26 @@ checkconfig() {
 start() {
 	checkconfig || return 1
 	ebegin "Starting Seafile service"
+	chown -R seafile:seafile /var/lib/seafile/$instance
 	cd /var/lib/seafile/$instance
-	start-stop-daemon \
-		--start \
-		--chdir /var/lib/seafile/$instance \ 
-		--exec /usr/bin/ccnet-server \
-		--user seafile \
-		--make-pidfile \
-		--background \
-		--pidfile /var/run/ccnet_$instance.pid \
-		-- -c /var/lib/seafile/$instance/ccnet -d
 	
 	start-stop-daemon \
 		--start \
 		--chdir /var/lib/seafile/$instance \
-		--exec /usr/bin/seaf-mon \
+		--exec seafile-admin \
 		--user seafile \
-		--make-pidfile \
-		--background \
-		--pidfile /var/run/seamon_$instance.pid \
-		-- -c /var/lib/seafile/$instance/ccnet -d /var/lib/seafile/$instance/seafile-data
-	start-stop-daemon \
-		--start \
-		--chdir /var/lib/seafile/$instance \
-		--exec /usr/bin/seaf-server \
-		--user seafile \
-		--make-pidfile \
-		--background \
-		--pidfile /var/run/seafile_$instance.pid \
-		-- -c /var/lib/seafile/$instance/ccnet -d /var/lib/seafile/$instance/seafile-data
-	start-stop-daemon \
-		--start \
-		--chdir /var/lib/seafile/$instance \
-		--exec /usr/bin/httpserver \
-		--user seafile \
-		--make-pidfile \
-		--background \
-		--pidfile /var/run/httpserver_$instance.pid \
-		-- -c /var/lib/seafile/$instance/ccnet -d /var/lib/seafile/$instance/seafile-data
+		-- start
+	 start
 	eend ${?}
 }
 
 stop() {
-	ebegin "Stopping Seafile service"
-	start-stop-daemon --stop \
-		--pidfile /var/run/httpserver_$instance.pid
-	start-stop-daemon --stop \
-		--pidfile /var/run/seafile_$instance.pid
-	start-stop-daemon --stop \
-		--pidfile /var/run/seamon_$instance.pid
-	start-stop-daemon --stop \
-		--pidfile /var/run/seafile_$instance.pid
+	ebegin "Stopping Seafile service"	
+	start-stop-daemon \
+		--stop \
+		--chdir /var/lib/seafile/$instance \
+		--exec seafile-admin \
+		--user seafile \
+		-- stop
 	eend ${?}
 }

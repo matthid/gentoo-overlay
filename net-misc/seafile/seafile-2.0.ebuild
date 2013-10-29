@@ -44,7 +44,8 @@ DEPEND=">=dev-lang/python-2.5[sqlite]
 	dev-util/pkgconfig"
 
 RDEPEND="
-	server? ( net-libs/ccnet[server] )"
+	server? ( net-libs/ccnet[server] )
+	client? ( net-libs/ccnet[client] )"
 
 pkg_setup() {
 	python_set_active_version 2
@@ -94,18 +95,13 @@ src_install() {
 		
 		mkdir -p ${D}/var/lib/seafile/default
 		cd ${D}/var/lib/seafile/default
-		# ccnet dependency
-		ccnet-init -c ${D}/var/lib/seafile/default/ccnet --name "gentoo-seafile" --port 10001 --host "seafile.$(hostname -d)"
+		
 		mkdir -p ${D}/etc/seafile
-		mv ${D}/var/lib/seafile/default/ccnet/ccnet.conf ${D}/etc/seafile/ccnet.conf
+		touch ${D}/etc/seafile/ccnet.conf
 		ln /etc/seafile/default/ccnet.conf "${D}/var/lib/seafile/default/ccnet/ccnet.conf"
 		
-		${D}/usr/bin/seaf-server-init --seafile-dir ${D}/var/lib/seafile/default/seafile-data --port 20001
-		mv ${D}/var/lib/seafile/default/seafile-data/seafile.conf ${D}/etc/seafile/default/seafile.conf		
+		touch ${D}/etc/seafile/default/seafile.conf		
 		ln /etc/seafile/default/seafile.conf "${D}/var/lib/seafile/default/seafile-data/seafile.conf"
-		
-		
-		
 	fi
 	rm -rf ${D}/seafile
 	rm -rf ${D}/seaserv
@@ -117,11 +113,13 @@ pkg_postinst() {
 	if use server ; then
 		elog 
 		elog "Seafile server installed."
-		elog "While we generated some default configuration for you"
-		elog "it is highly recommended to edit those configuration files:"
-		elog "- /etc/seafile/ccnet.conf ()"
-		elog "Seafile server installed"
-		elog "Seafile server installed"
+		elog "You have to run \"seafile-admin setup\" in the /var/lib/seafile/default/ directory as seafile user"
+		elog "After that you can still edit your config in"
+		elog "/etc/seafile/default/"
+		elog "After configuration setup apache: https://github.com/haiwen/seafile/wiki/Deploy-Seafile-with-apache"
+		elog "If you want you can use mysql: https://github.com/haiwen/seafile/wiki/Download-and-Setup-Seafile-Server-with-MySQL"
+		elog "After all the steps above you can start your server with \"/etc/init.d/seafile-server start\""
+		elog 
 		
 	fi
 }
