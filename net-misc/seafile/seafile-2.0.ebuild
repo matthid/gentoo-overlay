@@ -40,7 +40,7 @@ DEPEND=">=dev-lang/python-2.5[sqlite]
 	<dev-python/Djblets-0.7
 	dev-python/chardet
 	www-servers/gunicorn
-	net-libs/libevhtp
+	<net-libs/libevhtp-1.2
 	sys-devel/gettext
 	dev-util/pkgconfig"
 
@@ -139,6 +139,8 @@ pkg_postinst() {
 		elog "su -s /bin/bash seafile"
 		elog "cd /var/lib/seafile/default"
 		elog "seafile-server/setup-seafile-mysql.sh"
+		elog "NOTE: if you encounter errors delete the directories"
+		elog "mentioned in the error message and run the commands above"
 		elog
 		elog "Start your seafile server with:"
 		elog "etc/init.d/seafile-server start"
@@ -146,8 +148,8 @@ pkg_postinst() {
 		elog "For reference see also:"
 		elog "https://github.com/haiwen/seafile/wiki/Deploy-Seafile-with-apache"
 		elog "https://github.com/haiwen/seafile/wiki/Download-and-Setup-Seafile-Server-with-MySQL"
-		elog 
-		
+		elog "https://github.com/haiwen/seafile/wiki/Configure-Seafile-to-use-LDAP"
+		elog		
 	fi
 
 	if ! use python; then
