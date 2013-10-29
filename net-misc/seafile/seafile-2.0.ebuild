@@ -43,7 +43,8 @@ DEPEND=">=dev-lang/python-2.5[sqlite]
 	sys-devel/gettext
 	dev-util/pkgconfig"
 
-RDEPEND=""
+RDEPEND="
+	server? ( net-libs/ccnet[server] )"
 
 pkg_setup() {
 	python_set_active_version 2
