@@ -15,15 +15,17 @@ then
 	inherit git-2
 	EGIT_REPO_URI="git://github.com/haiwen/seafile.git"
 	KEYWORDS=
+	S=${WORKDIR}
 else
 # Wow they really don't have any naming convetions whatsoever
 
 	SRC_URI="https://github.com/haiwen/seafile/archive/server-2.0.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~x86 ~amd64"
+	S="${WORKDIR}/seafile-server-${PV}"
 fi
 
 
-S=${WORKDIR}
+
 
 LICENSE="GPL-2"
 SLOT="0"

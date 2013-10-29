@@ -4,7 +4,7 @@
 
 EAPI=4
 
-inherit eutils cmake-utils git-2
+inherit eutils cmake-utils versionator
 
 DESCRIPTION="Flexible replacement for libevent's httpd API"
 HOMEPAGE="https://github.com/ellzey/libevhtp/"
@@ -12,13 +12,15 @@ HOMEPAGE="https://github.com/ellzey/libevhtp/"
 MAJOR=$(get_version_component_range 1)
 if [ "$MAJOR" -eq "9999" ]
 then
+	inherit git-2
 	EGIT_REPO_URI="git://github.com/ellzey/libevhtp.git"
 	KEYWORDS=
+	S=${WORKDIR}
 else
 	SRC_URI="https://github.com/ellzey/libevhtp/archive/${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~x86 ~amd64"
 fi
-S=${WORKDIR}
+
 
 SLOT="0"
 LICENSE="GPL-2"

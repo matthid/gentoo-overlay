@@ -4,7 +4,7 @@
 
 EAPI=4
 
-inherit eutils autotools git-2 python
+inherit eutils autotools python versionator
 
 DESCRIPTION="Networking library for Seafile"
 HOMEPAGE="http://www.seafile.com"
@@ -13,14 +13,16 @@ HOMEPAGE="http://www.seafile.com"
 MAJOR=$(get_version_component_range 1)
 if [ "$MAJOR" -eq "9999" ]
 then
+	inherit git-2
 	EGIT_REPO_URI="git://github.com/haiwen/ccnet.git"
 	KEYWORDS=
+	S=${WORKDIR}
 else
 	SRC_URI="https://github.com/haiwen/ccnet/archive/server-2.0.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~x86 ~amd64"
+	S="${WORKDIR}/ccnet-server-${PV}"
 fi
 
-S=${WORKDIR}
 SLOT="0"
 LICENSE="GPL-2"
 IUSE="demo client server python cluster ldap mysql"
@@ -33,16 +35,18 @@ DEPEND="net-libs/libsearpc
 
 RDEPEND=""
 
-src_unpack() {
-	git-2_src_unpack
-}
-
 if [ "$MAJOR" -eq "9999" ]
 then
-	src_prepare() {
-		./autogen.sh || die "Autogen failed"
+	src_unpack() {
+	     git-2_src_unpack
 	}
 fi
+ 
+
+src_prepare() {
+	./autogen.sh || die "Autogen failed"
+}
+
 
 src_configure() {
 	econf $(use_enable demo compile-demo) \
