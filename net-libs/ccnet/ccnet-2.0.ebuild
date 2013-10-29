@@ -59,3 +59,11 @@ src_configure() {
 		--enable-console \
 		|| die "econf failed"
 }
+
+src_install() {
+	emake DESTDIR="${D}" install
+	
+	
+	
+	rm -rf ${D}/ccnet
+}

@@ -56,6 +56,14 @@ then
 	}
 fi
 
+pkg_preinst() {
+	if use server ; then
+		# user for the seafile deamon
+		enewuser seafile -1 /bin/bash /var/lib/seafile
+		mkdir /var/lib/seafile/data
+	fi
+}
+
 src_prepare() {
 	./autogen.sh || die "Autogen failed"
 }
@@ -72,4 +80,47 @@ src_configure() {
 
 src_compile() {
 	emake -j1 || die "emake failed"
+}
+
+src_install() {
+	emake DESTDIR="${D}" install
+	
+	if use server ; then
+		newinitd "${FILESDIR}"/seafile.initd seafile-server \
+			|| die "Init script installation failed"
+			
+		# Configure default instance
+		
+		mkdir -p ${D}/var/lib/seafile/default
+		cd ${D}/var/lib/seafile/default
+		# ccnet dependency
+		ccnet-init -c ${D}/var/lib/seafile/default/ccnet --name "gentoo-seafile" --port 10001 --host "seafile.$(hostname -d)"
+		mkdir -p ${D}/etc/seafile
+		mv ${D}/var/lib/seafile/default/ccnet/ccnet.conf ${D}/etc/seafile/ccnet.conf
+		ln /etc/seafile/default/ccnet.conf "${D}/var/lib/seafile/default/ccnet/ccnet.conf"
+		
+		${D}/usr/bin/seaf-server-init --seafile-dir ${D}/var/lib/seafile/default/seafile-data --port 20001
+		mv ${D}/var/lib/seafile/default/seafile-data/seafile.conf ${D}/etc/seafile/default/seafile.conf		
+		ln /etc/seafile/default/seafile.conf "${D}/var/lib/seafile/default/seafile-data/seafile.conf"
+		
+		
+		
+	fi
+	rm -rf ${D}/seafile
+	rm -rf ${D}/seaserv
+}
+
+
+pkg_postinst() {
+	elog
+	if use server ; then
+		elog 
+		elog "Seafile server installed."
+		elog "While we generated some default configuration for you"
+		elog "it is highly recommended to edit those configuration files:"
+		elog "- /etc/seafile/ccnet.conf ()"
+		elog "Seafile server installed"
+		elog "Seafile server installed"
+		
+	fi
 }
