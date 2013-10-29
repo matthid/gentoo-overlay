@@ -46,6 +46,7 @@ DEPEND=">=dev-lang/python-2.5[sqlite]
 
 RDEPEND="
 	server? ( net-libs/ccnet[server] )
+	python? ( net-libs/ccnet[python] )
 	client? ( net-libs/ccnet[client] )"
 
 pkg_setup() {
