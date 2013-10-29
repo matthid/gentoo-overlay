@@ -103,6 +103,14 @@ src_install() {
 		
 		touch ${D}/etc/seafile/default/seafile.conf		
 		ln /etc/seafile/default/seafile.conf "${D}/var/lib/seafile/default/seafile-data/seafile.conf"
+		
+		mkdir  "${D}/var/lib/seafile/default/seafile-server"
+		cd "seafile-server"
+		wget https://seafile.googlecode.com/files/seahub-1.8.1.tar.gz --output-document seahub.tar.gz
+		tar xzf seahub.tar.gz
+		mv seahub-1.8.1 seahub
+		rm seahub.tar.gz
+		
 	fi
 	rm -rf ${D}/seafile
 	rm -rf ${D}/seaserv
