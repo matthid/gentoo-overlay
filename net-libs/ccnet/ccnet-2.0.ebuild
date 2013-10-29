@@ -61,7 +61,9 @@ src_configure() {
 }
 
 src_install() {
-	emake DESTDIR="${D}" install
+# parallel build broken :( 
+  	ewarn "parallel build is disabled for this package (broken)."
+	emake -j1 DESTDIR="${D}" install
 	
 	
 

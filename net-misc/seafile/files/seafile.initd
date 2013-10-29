@@ -21,24 +21,22 @@ start() {
 	ebegin "Starting Seafile service"
 	chown -R seafile:seafile /var/lib/seafile/$instance
 	cd /var/lib/seafile/$instance
-	
-	start-stop-daemon \
-		--start \
-		--chdir /var/lib/seafile/$instance \
-		--exec seafile-admin \
-		--user seafile \
-		-- start
-	 start
+	export instance
+	su seafile <<'EOF'
+cd "/var/lib/seafile/$instance"
+echo "starting instance $instance"
+seafile-admin start
+EOF
 	eend ${?}
 }
 
 stop() {
 	ebegin "Stopping Seafile service"	
-	start-stop-daemon \
-		--stop \
-		--chdir /var/lib/seafile/$instance \
-		--exec seafile-admin \
-		--user seafile \
-		-- stop
+	cd /var/lib/seafile/$instance
+	export instance
+	su seafile <<'EOF'
+cd "/var/lib/seafile/$instance"
+seafile-admin stop
+EOF
 	eend ${?}
 }

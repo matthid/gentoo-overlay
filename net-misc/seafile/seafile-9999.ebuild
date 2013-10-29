@@ -29,7 +29,7 @@ fi
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="gtk server httpserver client python"
+IUSE="gtk server client python"
 
 DEPEND=">=dev-lang/python-2.5[sqlite]
 	>=dev-python/django-1.5
@@ -40,7 +40,7 @@ DEPEND=">=dev-lang/python-2.5[sqlite]
 	<dev-python/Djblets-0.7
 	dev-python/chardet
 	www-servers/gunicorn
-	httpserver? ( net-libs/libevhtp )
+	net-libs/libevhtp
 	sys-devel/gettext
 	dev-util/pkgconfig"
 
@@ -77,12 +77,12 @@ src_configure() {
 		$(use_enable server) \
 		$(use_enable client) \
 		$(use_enable python) \
-		$(use_enable httpserver) \
 		--enable-console \
 		|| die "econf failed"
 }
 
 src_compile() {
+	ewarn "parallel build is disabled for this package (build broken)."
 	emake -j1 || die "emake failed"
 }
 
@@ -113,6 +113,9 @@ src_install() {
 		rm seahub.tar.gz
 		
 	fi
+	mkdir -p "${D}/var/lib/seafile"	
+	mv "${S}/scripts" "${D}/var/lib/seafile/.scripts"
+
 	mkdir -p "${D}/var/lib/seafile/root"
 	mv ${D}/seafile "${D}/var/lib/seafile/root"
 	rm ${D}/seaserv "${D}/var/lib/seafile/root"
@@ -133,5 +136,9 @@ pkg_postinst() {
 		elog "After all the steps above you can start your server with \"/etc/init.d/seafile-server start\""
 		elog 
 		
+	fi
+
+	if ! use python; then
+	     	ewarn "If you want to use the python scripts you should rebuild this package with the python use flag!"
 	fi
 }
