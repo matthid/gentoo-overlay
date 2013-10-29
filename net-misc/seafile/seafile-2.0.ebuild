@@ -98,13 +98,6 @@ src_install() {
 		mkdir -p ${D}/var/lib/seafile/default
 		cd ${D}/var/lib/seafile/default
 		
-		mkdir -p ${D}/etc/seafile
-		touch ${D}/etc/seafile/ccnet.conf
-		ln /etc/seafile/default/ccnet.conf "${D}/var/lib/seafile/default/ccnet/ccnet.conf"
-		
-		touch ${D}/etc/seafile/default/seafile.conf		
-		ln /etc/seafile/default/seafile.conf "${D}/var/lib/seafile/default/seafile-data/seafile.conf"
-		
 		mkdir  "${D}/var/lib/seafile/default/seafile-server"
 		cd "seafile-server"
 		wget https://seafile.googlecode.com/files/seahub-1.8.1.tar.gz --output-document seahub.tar.gz
@@ -114,7 +107,7 @@ src_install() {
 		
 	fi
 	mkdir -p "${D}/var/lib/seafile"	
-	mv "${S}/scripts" "${D}/var/lib/seafile/.scripts"
+	mv "${S}/scripts" "${D}/var/lib/seafile/scripts"
 
 	mkdir -p "${D}/var/lib/seafile/root"
 	mv ${D}/seafile "${D}/var/lib/seafile/root"
