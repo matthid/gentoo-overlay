@@ -29,7 +29,7 @@ fi
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="gtk server client python"
+IUSE="gtk server client python apache seahub"
 
 DEPEND=">=dev-lang/python-2.5[sqlite]
 	>=dev-python/django-1.5
@@ -44,10 +44,15 @@ DEPEND=">=dev-lang/python-2.5[sqlite]
 	sys-devel/gettext
 	dev-util/pkgconfig"
 
+REQUIRED_USE="
+	seahub? ( server )
+	apache? ( seahub )"
 RDEPEND="
 	server? ( net-libs/ccnet[server] )
 	python? ( net-libs/ccnet[python] )
-	client? ( net-libs/ccnet[client] )"
+	client? ( net-libs/ccnet[client] )
+	apache? ( www-apache/mod_fastcgi )
+	seahub? ( dev-python/flup dev-python/pillow[jpeg] )"
 
 pkg_setup() {
 	python_set_active_version 2
@@ -92,9 +97,14 @@ src_install() {
 
 
 	if use server ; then
-		newinitd "${FILESDIR}"/seafile.initd seafile-server \
-			|| die "Init script installation failed"
-			
+	        if use seahub ; then
+		        newinitd "${FILESDIR}"/seafile_withseahub.initd seafile-server \
+				 || die "Init script installation failed"
+	        else
+			newinitd "${FILESDIR}"/seafile.initd seafile-server \
+				 || die "Init script installation failed"
+		fi
+	
 		# Configure default instance
 		mkdir -p "${D}/var/lib/seafile/default"	
 		mv "${S}/scripts" "${D}/var/lib/seafile/default/seafile-server"
@@ -102,10 +112,12 @@ src_install() {
 
 		
 		cd "${D}/var/lib/seafile/default/seafile-server"
-		wget https://seafile.googlecode.com/files/seahub-1.8.1.tar.gz --output-document seahub.tar.gz
-		tar xzf seahub.tar.gz
-		mv seahub-1.8.1 seahub
-		rm seahub.tar.gz
+		if use seahub ; then
+			wget https://seafile.googlecode.com/files/seahub-1.8.1.tar.gz --output-document seahub.tar.gz
+			tar xzf seahub.tar.gz
+			mv seahub-1.8.1 seahub
+			rm seahub.tar.gz
+		fi
 		
 	fi
 	

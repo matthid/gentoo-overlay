@@ -1,0 +1,46 @@
+#!/sbin/runscript
+# Copyright 1999-2010 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+sogod_bin=""
+sogod_port=""
+instance="default"
+
+depend() {
+	need net
+	after postgresql mysql
+}
+
+checkconfig() {
+	ebegin "Config ok"
+}
+
+start() {
+	checkconfig || return 1
+	ebegin "Starting Seafile service"
+	chown -R seafile:seafile /var/lib/seafile/$instance
+	cd /var/lib/seafile/$instance
+	export instance
+	su seafile <<'EOF'
+# ulimit -u 50
+cd "/var/lib/seafile/$instance"
+echo "starting instance $instance"
+./seafile-server/seafile.sh start
+echo "starting seahub fastcgi"
+./seafile-server/seahub.sh start-fastcgi
+EOF
+	eend ${?}
+}
+
+stop() {
+	ebegin "Stopping Seafile service"	
+	cd /var/lib/seafile/$instance
+	export instance
+	su seafile <<'EOF'
+cd "/var/lib/seafile/$instance"
+./seafile-server/seafile.sh stop
+./seafile-server/seahub.sh stop
+EOF
+	eend ${?}
+}
