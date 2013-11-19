@@ -3,12 +3,12 @@
 This layman overlay for gentoo linux contains some packages I use myself and are missing/outdated in the portage tree.
 
 Examples / Highlights:
+* seafile-2.0 with apache and seahub support (!)
 * Tine20 (!)
-* SOGo-2.0.7 (!)
+* SOGo-2.0.7 (not used anymore, replaced with tine20)
 * gitflow (!)
-* prosody with sasl support (!)
-* Eclipse with icedtea support
-* Some testing ebuilds for mono before I push them on gentoo-dotnet (layman -a dotnet)
+* prosody with sasl support 
+* Eclipse with icedtea support (outdated)
 
 # Installation
 
