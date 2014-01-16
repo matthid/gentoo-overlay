@@ -32,7 +32,7 @@ IUSE="gtk server client python apache seahub"
 
 
 #	dev-libs/jansson
-DEPEND=">=dev-lang/python-3
+DEPEND="dev-lang/python
 	>=dev-libs/libevent-2.0
 	>=dev-libs/glib-2.28
 	>=dev-util/intltool-0.40
