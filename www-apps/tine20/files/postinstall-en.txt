@@ -10,6 +10,19 @@ ${MY_INSTALLDIR}/tine20/config.inc.php (you can skip the database and only setup
 mysql> CREATE DATABASE tine20 DEFAULT CHARACTER SET 'UTF8';
 mysql> GRANT ALL PRIVILEGES ON tine20.* TO 'tine20'@'localhost' IDENTIFIED BY 'safe_password_here';
 
-3. Use http://${VHOST_HOSTNAME}/${VHOST_APPDIR}/setup.php to finish the setup (login with the username and password specified in the config.inc.php file).
+3. Install dependencies with composer
+cd ${MY_INSTALLDIR}/tine20
+curl -sS https://getcomposer.org/installer | php
+php composer.phar install
+
+4. Use http://${VHOST_HOSTNAME}/${VHOST_APPDIR}/setup.php to finish the setup (login with the username and password specified in the config.inc.php file).
 
 Use the official install howto as reference: https://www.tine20.org/wiki/index.php/Admins/Install_Howto
+
+IF YOU ARE UPGRADING:
+Run (replace host, dir and newversion as needed):
+webapp-config --upgrade --host=vhost --dir=/tine20 tine20 newversion
+CONFIG_PROTECT="/var/www/tine20.domain.org/htdocs//" dispatch-conf
+Run step 3 from above & make sure to follow additional official upgrade instructions (updating database).
+
+
