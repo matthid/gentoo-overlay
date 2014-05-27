@@ -12,6 +12,7 @@ COMMIT_ID="f10b71f338ce"
 MAJOR=$(get_version_component_range 1)
 if [ "$MAJOR" -eq "9999" ]
 then
+	die "live ebuild not working currently"
 	#inherit git-2
 	#EGIT_REPO_URI="git://github.com/haiwen/seafile.git"
 	#KEYWORDS=
@@ -27,8 +28,7 @@ SLOT="0"
 
 
 #	dev-libs/jansson
-DEPEND=">=dev-lang/python-2.5
-	>=dev-python/python-support-0.90.0"
+DEPEND=">=dev-lang/python-2.5"
 
 RDEPEND="${DEPEND}"
 
@@ -46,18 +46,24 @@ src_unpack() {
 	fi
 
 	cd "${S}"
+	
+}
+
+src_prepare() {
+	      epatch "${FILESDIR}/${PN}-python-2.patch"
 }
 
 
 src_install() {
-	cd "doc/manpages"
-	emake DESTDIR="${D}" install
+#	cd "doc/manpages"
+#	emake DESTDIR="${D}" install
 	cd "${S}"
 	mkdir -p "${D}/usr/share/sinntp"
 	cp "plugins.py" "${D}/usr/share/sinntp"
 	cp "sinntp" "${D}/usr/share/sinntp"
 	cp "utils.py" "${D}/usr/share/sinntp"
-	dobin "nntp-get" "nntp-list" "nntp-pull" "nntp-push" "sinntp"
+	dobin "nntp-get" "nntp-list" "nntp-pull" "nntp-push"
+	dosym "/usr/share/sinntp/sinntp" "/usr/bin/sinntp"
 	cd "doc"
 	dodoc "NEWS" "mutt-integration.txt" "changelog" "changelog.old"
 }
