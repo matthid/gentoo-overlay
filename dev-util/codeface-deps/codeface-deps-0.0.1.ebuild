@@ -17,20 +17,19 @@ LICENSE="GPL-2"
 KEYWORDS="~amd64 ~x86"
 SLOT="0"
 
-# needs ramereth (layman overlay)
+# echo "needs ramereth (layman overlay)"
 # sinntp (not in portage, did not found it in an overlay -> custom ebuild)
 CDEPEND="dev-lang/R
 	dev-db/mysql
 	>=dev-db/mysql-workbench-6.0.0
 	net-libs/nodejs
-	sys-apps/npm 
 	>=media-gfx/graphviz-2.30
 	>=net-misc/sinntp-1.5.1
 	app-text/texlive
 	virtual/jdk
 	dev-python/pip
 	app-text/sloccount
-	media-libs/mesa gles2
+	media-libs/mesa[gles2]
 	app-text/poppler
 	dev-libs/libyaml"
 	
