@@ -16,6 +16,7 @@ SLOT="0"
 # ctags -> custom ebuild
 CDEPEND="dev-lang/R
 	~dev-util/ctags-5.9_alpha_pre
+	dev-python/mysql-python
 	dev-db/mysql
 	>=dev-db/mysql-workbench-6.0.0
 	net-libs/nodejs
