@@ -4,22 +4,18 @@
 
 EAPI="4"
 
-#S="${WORKDIR}/org.eclipse.linuxtools.eclipse-build-${ECLIPSE_BUILD_VER}/eclipse-build"
-
 DESCRIPTION="Codeface Dependencies (for codeface development)"
 HOMEPAGE="https://github.com/siemens/codeface"
 SRC_URI=""
-#"${BASE_URI}eclipse-${BUILD_VER}-src.tar.bz2
-#	http://git.eclipse.org/c/linuxtools/org.eclipse.linuxtools.eclipse-build.git/snapshot/org.eclipse.linuxtools.eclipse-build-${ECLIPSE_BUILD_VER}.tar.bz2 -> eclipse-build-${ECLIPSE_BUILD_VER}.tar.bz2"
-#	${BASE_URI}eclipse-build-${ECLIPSE_BUILD_VER}.tar.xz"
 
 LICENSE="GPL-2"
 KEYWORDS="~amd64 ~x86"
 SLOT="0"
 
-# echo "needs ramereth (layman overlay)"
-# sinntp (not in portage, did not found it in an overlay -> custom ebuild)
+# sinntp taken from ramereth overlay -> custom ebuild
+# ctags -> custom ebuild
 CDEPEND="dev-lang/R
+	~dev-util/ctags-5.9_alpha_pre
 	dev-db/mysql
 	>=dev-db/mysql-workbench-6.0.0
 	net-libs/nodejs
