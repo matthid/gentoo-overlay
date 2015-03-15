@@ -35,7 +35,7 @@ You also have to edit the /var/lib/seafile/default/seafile-server/seafile.sh fil
  export SEAFILE_LD_LIBRARY_PATH=${INSTALLPATH}/seafile/lib/:${INSTALLPATH}/seafile/lib64:${LD_LIBRARY_PATH}
 ```
 
-And you should edit the /et /etc/init.d/seafile-se file to your needs.
+And you should edit the `/et /etc/init.d/seafile-se` file to your needs.
 Note that those changes are gone after  reinstallatio, so make sure to make copies!
 
 # Installation
@@ -56,7 +56,7 @@ Now just execute:
 Maybe you also have to add the lua, gnustep and sunrise Overlay because I depend on some packages of those overlays. (If you get some missing ebuild errors)
 
 # Notes
-Contact me: matthid@idoop.de (jabber); matthi.d@gmail.com (email); 
+Contact me: matthi.d@gmail.com (email); 
 http://redmine.yaaf.de/projects/matthias/wiki (German).
 
 This Overlay is used to build your own homeserver with Gentoo: http://redmine.yaaf.de/projects/matthias/wiki/Homeserver (German)
