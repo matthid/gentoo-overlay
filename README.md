@@ -63,4 +63,4 @@ This Overlay is used to build your own homeserver with Gentoo: http://redmine.ya
 
 Some credits:
 
-* The Prosody and Spectrum ebuilds are taken from the wonderfull rion overlay (http://code.google.com/p/rion-overlay).
+* The Prosody and Spectrum ebuilds are initially taken from the wonderfull rion overlay (http://code.google.com/p/rion-overlay).
