@@ -63,6 +63,4 @@ This Overlay is used to build your own homeserver with Gentoo: http://redmine.ya
 
 Some credits:
 
-* The Sope and SOGo ebuild were originally taken from the gnustep-apps overlay and were updated to the latest sogo Version (http://overlays.gentoo.org/proj/gnustep). 
 * The Prosody and Spectrum ebuilds are taken from the wonderfull rion overlay (http://code.google.com/p/rion-overlay).
-* The Eclipse ebuild was taken from the seden overlay (http://gpo.zugaina.org/Overlays/seden)
