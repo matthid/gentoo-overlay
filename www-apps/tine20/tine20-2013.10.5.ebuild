@@ -77,16 +77,3 @@ src_install() {
 	webapp_serverowned -R "/var/lib/tine20"
 	webapp_src_install
 }
-
-pkg_postinst() {
-	ewarn "Even though you have now updated tine20 you still"
-	ewarn "need to update your dependencies with:"
-	ewarn
-	ewarn "cd /var/www/TINE_DIR/htdocs"
-	ewarn "./composer.phar install"
-	ewarn
-	ewarn "Finally you need to open and login into"
-	ewarn "http://tine.domain/<dir>/setup.php"
-	ewarn "and finish by upgrading your installed applications."
-	ewarn "For details see https://wiki.tine20.org/Update_Howto"
-}
