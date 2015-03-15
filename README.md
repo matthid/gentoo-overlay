@@ -35,8 +35,8 @@ You also have to edit the /var/lib/seafile/default/seafile-server/seafile.sh fil
  export SEAFILE_LD_LIBRARY_PATH=${INSTALLPATH}/seafile/lib/:${INSTALLPATH}/seafile/lib64:${LD_LIBRARY_PATH}
 ```
 
-And you should edit the `/et /etc/init.d/seafile-se` file to your needs.
-Note that those changes are gone after  reinstallatio, so make sure to make copies!
+And you should edit the `/etc/init.d/seafile-server/config` file to your needs.
+Note that those changes are gone after reinstallation, so make sure to make copies!
 
 # Installation
 
