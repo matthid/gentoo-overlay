@@ -53,6 +53,8 @@ Now just execute:
     layman -S
     layman -a dragon
 
+You probably need to add other overlays if you get missing ebuild errors (like rion).
+
 # Notes
 Contact me: matthi.d@gmail.com (email); 
 http://redmine.yaaf.de/projects/matthias/wiki (German).
