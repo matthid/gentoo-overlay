@@ -53,8 +53,6 @@ Now just execute:
     layman -S
     layman -a dragon
 
-Maybe you also have to add the lua, gnustep and sunrise Overlay because I depend on some packages of those overlays. (If you get some missing ebuild errors)
-
 # Notes
 Contact me: matthi.d@gmail.com (email); 
 http://redmine.yaaf.de/projects/matthias/wiki (German).
