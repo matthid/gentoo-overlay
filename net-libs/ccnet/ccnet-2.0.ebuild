@@ -29,7 +29,7 @@ IUSE="demo client server python cluster ldap mysql"
 
 DEPEND="net-libs/libsearpc
 	>=dev-libs/glib-2.0
-	>=dev-lang/vala-0.8
+	dev-lang/vala:0.22
 	dev-db/libzdb
 	dev-util/pkgconfig"
 
@@ -49,6 +49,7 @@ src_prepare() {
 
 
 src_configure() {
+	export VALAC="$(type -P valac-0.22)"
 	econf $(use_enable demo compile-demo) \
 		$(use_enable server) \
 		$(use_enable client) \
