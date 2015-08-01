@@ -24,7 +24,7 @@ fi
 
 SLOT="0"
 LICENSE="GPL-2"
-IUSE=""
+IUSE="+ssl +shared_build"
 
 DEPEND=">=dev-libs/libevent-2"
 
@@ -36,3 +36,15 @@ then
 		git-2_src_unpack
 	}
 fi
+
+src_configure() {
+  local mycmakeargs=(
+    $(cmake-utils_useno ssl EVHTP_DISABLE_SSL)
+	$(cmake-utils_use shared_build EVHTP_BUILD_SHARED)
+  )
+
+  cmake-utils_src_configure
+}
+
+
+

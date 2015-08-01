@@ -1,0 +1,28 @@
+--- backends/skype/skype.cpp	2015-04-05 17:37:56.960000000 +0200
++++ backends/skype/skype.cpp	2015-04-05 17:37:47.180000000 +0200
+@@ -42,6 +42,7 @@
+ #include "malloc.h"
+ #endif
+ 
++#define MAX_SKYPE_DBUS_RETRIES 150 
+ 
+ DEFINE_LOGGER(logger, "Skype");
+ 
+@@ -139,7 +140,7 @@
+ 		if (m_proxy == NULL && error != NULL) {
+ 			LOG4CXX_INFO(logger,  m_username << ":" << error->message);
+ 
+-			if (m_counter == 15) {
++			if (m_counter == MAX_SKYPE_DBUS_RETRIES) {
+ 				LOG4CXX_ERROR(logger, "Logging out, proxy couldn't be created: " << error->message);
+ 				m_np->handleDisconnected(m_user, pbnetwork::CONNECTION_ERROR_AUTHENTICATION_IMPOSSIBLE, error->message);
+ 				logout();
+@@ -186,7 +187,7 @@
+ 	}
+ 
+ 	std::string re = send_command("NAME Spectrum");
+-	if (m_counter++ > 15) {
++	if (m_counter++ > MAX_SKYPE_DBUS_RETRIES) {
+ 		LOG4CXX_ERROR(logger, "Logging out, because we tried to connect the Skype over DBUS 15 times without success");
+ 		m_np->handleDisconnected(m_user, pbnetwork::CONNECTION_ERROR_AUTHENTICATION_IMPOSSIBLE, "Skype is not ready. This issue have been logged and admins will check it and try to fix it soon.");
+ 		close(fd_output);
