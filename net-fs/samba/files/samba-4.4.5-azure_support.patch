@@ -1,0 +1,59 @@
+diff --git a/auth/gensec/spnego.c b/auth/gensec/spnego.c
+index 3962d72..271c961 100644
+--- a/auth/gensec/spnego.c
++++ b/auth/gensec/spnego.c
+@@ -1127,6 +1127,20 @@ static NTSTATUS gensec_spnego_update(struct gensec_security *gensec_security, TA
+ 			}
+ 		}
+ 
++		/* Signed-off-by: William (Sandy) Snaman <ssnaman@datagravity.com>
++		 *
++		 * Unlike Windows 10, Server 2012, and Server 2016,
++		 * Microsoft Azure sends the last Session Setup Response
++		 * of the sequence without a mechListMIC.
++		 *
++		 * The original logic below does not handle this case and
++		 * passes the empty mechListMIC down to gensec_check_packet() which
++		 * calls down (eventually) to ntlmssp_check_packet() which then
++		 * fails because the signature length is 0.
++		 * The error shows up as...
++		 *   NTLMSSP packet check failed due to short signature (0 bytes)!
++		 *
++		 */
+ 		if (spnego_state->needs_mic_check) {
+ 			if (spnego.negTokenTarg.responseToken.length != 0) {
+ 				DEBUG(1, ("SPNEGO: Did not setup a mech in NEG_TOKEN_INIT\n"));
+@@ -1134,17 +1148,22 @@ static NTSTATUS gensec_spnego_update(struct gensec_security *gensec_security, TA
+ 				return NT_STATUS_INVALID_PARAMETER;
+ 			}
+ 
+-			nt_status = gensec_check_packet(spnego_state->sub_sec_security,
+-							spnego_state->mech_types.data,
+-							spnego_state->mech_types.length,
+-							spnego_state->mech_types.data,
+-							spnego_state->mech_types.length,
+-							&spnego.negTokenTarg.mechListMIC);
+-			if (!NT_STATUS_IS_OK(nt_status)) {
+-				DEBUG(2,("GENSEC SPNEGO: failed to verify mechListMIC: %s\n",
+-					nt_errstr(nt_status)));
+-				spnego_free_data(&spnego);
+-				return nt_status;
++			if (spnego.negTokenTarg.mechListMIC.length != 0) {
++				nt_status = gensec_check_packet(spnego_state->sub_sec_security,
++								spnego_state->mech_types.data,
++								spnego_state->mech_types.length,
++								spnego_state->mech_types.data,
++								spnego_state->mech_types.length,
++								&spnego.negTokenTarg.mechListMIC);
++				if (!NT_STATUS_IS_OK(nt_status)) {
++					DEBUG(2,("GENSEC SPNEGO: failed to verify mechListMIC: %s\n",
++						nt_errstr(nt_status)));
++					spnego_free_data(&spnego);
++					return nt_status;
++				}
++			} else {
++				/* No MIC was provided to check */
++				nt_status = NT_STATUS_OK;
+ 			}
+ 			spnego_state->needs_mic_check = false;
+ 			spnego_state->done_mic_check = true;
