@@ -21,7 +21,7 @@ IUSE="ldap passenger"
 DEPEND="dev-libs/icu media-gfx/imagemagick
 virtual/ruby-ssl
 virtual/rubygems
->=dev-ruby/rails-4
+<dev-ruby/rails-5
 dev-ruby/rake
 passenger? ( www-apache/passenger )"
 RDEPEND="$DEPEND"

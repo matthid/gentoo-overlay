@@ -4,7 +4,7 @@
 
 EAPI="2"
 
-inherit webapp depend.php git-2 eutils versionator
+inherit webapp git-2 eutils versionator
 
 DESCRIPTION="GroupWare & CRM."
 HOMEPAGE="http://www.tine20.org/home.html"
@@ -14,7 +14,8 @@ HOMEPAGE="http://www.tine20.org/home.html"
 LICENSE="AGPL-3 BSD LGPL-2.1 Apache-2.0 LGPL-3 GPL-3"
 #TODO: Add other databases
 IUSE="memcached mysql ldap"
-EGIT_REPO_URI="http://git.tine20.org/git/tine20"
+#EGIT_REPO_URI="http://git.tine20.org/git/tine20"
+EGIT_REPO_URI="https://github.com/tine20/Tine-2.0-Open-Source-Groupware-and-CRM.git"
 
 # Trying to use this ebuild for all versions
 MAJOR=$(get_version_component_range 1)
@@ -47,10 +48,10 @@ fi
 RDEPEND="dev-lang/php[ctype,xml,simplexml,gd,iconv,json,crypt,zip]
 		 mysql? ( dev-lang/php[mysql,mysqli,pdo] dev-db/mysql )
 		 memcached? ( dev-php/pecl-memcached net-misc/memcached )
-		 ldap? ( dev-lang/php[ldap] )"
+		 ldap? ( dev-lang/php[ldap] )
+		 virtual/httpd-php"
 
 need_httpd_cgi
-need_php_httpd
 
 src_prepare() {
 	cp ${FILESDIR}/config.inc.php tine20/config.inc.php
